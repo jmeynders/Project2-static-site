@@ -97,17 +97,12 @@ h2 {
     margin: 0.1rem 0;
 }
 
-.card button {
+.cite-link {
     margin-top: auto;
-    padding: 0.4rem;
-    border: 1px solid var(--rule);
-    background: white;
-    cursor: pointer;
-}
-
-.card button.selected {
-    background: var(--ink);
-    color: white;
+    padding-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--ink);
+    text-decoration: underline;
 }
 
 #selected-grid {

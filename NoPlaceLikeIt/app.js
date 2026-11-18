@@ -198,7 +198,6 @@ function renderRoomButtons() {
 }
 
 function cardHtml(w) {
-    const isSelected = selectedIds.has(w.id);
     const img = w.imageUrl
         ? `<img src="${w.imageUrl}" alt="${escapeHtml(w.title)}" loading="lazy">`
         : `<div style="height:180px;background:#ddd;display:grid;place-items:center;color:#666">no image</div>`;
@@ -209,9 +208,9 @@ function cardHtml(w) {
       <h3>${escapeHtml(w.title)}</h3>
       <p>${escapeHtml(w.creator)} · ${escapeHtml(w.date)}</p>
       <p>${escapeHtml(w.place)}</p>
-      <button data-id="${w.id}" class="${isSelected ? "selected" : ""}">
-        ${isSelected ? "✓ Selected" : "+ Select"}
-      </button>
+      <a href="${w.objectUrl}" target="_blank" class="cite-link">
+        View at Rijksmuseum ↗
+      </a>
     </article>`;
 }
 
@@ -232,40 +231,6 @@ function renderGallery() {
     }
 
     gallery.innerHTML = headerHtml + works.map(cardHtml).join("");
-
-    gallery.querySelectorAll("button[data-id]").forEach((btn) => {
-        btn.onclick = () => toggleSelection(btn.dataset.id);
-    });
-}
-
-function renderSelected() {
-    const grid = document.getElementById("selected-grid");
-    const count = document.getElementById("selected-count");
-    const chosen = allWorks.filter((w) => selectedIds.has(w.id));
-
-    count.textContent = `${chosen.length} work${chosen.length === 1 ? "" : "s"} selected`;
-
-    grid.innerHTML = chosen.map((w) => `
-    <article class="card">
-      ${w.imageUrl ? `<img src="${w.imageUrl}" alt="${escapeHtml(w.title)}">` : ""}
-      <h3>${escapeHtml(w.title)}</h3>
-      <p>${escapeHtml(w.creator)}</p>
-      <button data-id="${w.id}">Remove</button>
-    </article>`).join("");
-
-    grid.querySelectorAll("button[data-id]").forEach((btn) => {
-        btn.onclick = () => toggleSelection(btn.dataset.id);
-    });
-}
-
-// ---------- Selection ----------
-
-function toggleSelection(id) {
-    if (selectedIds.has(id)) selectedIds.delete(id);
-    else selectedIds.add(id);
-    localStorage.setItem("selected", JSON.stringify([...selectedIds]));
-    renderGallery();
-    renderSelected();
 }
 
 // ---------- Boot ----------
@@ -293,19 +258,11 @@ async function boot() {
         console.log(`Loaded ${allWorks.length} curated works`, allWorks);
 
         renderGallery();
-        renderSelected();
     } catch (err) {
         console.error(err);
         document.getElementById("gallery").innerHTML =
             `<p style="color:#b00">Could not load works: ${escapeHtml(err.message)}</p>`;
     }
 }
-
-document.getElementById("clear-selection").onclick = () => {
-    selectedIds.clear();
-    localStorage.removeItem("selected");
-    renderGallery();
-    renderSelected();
-};
 
 boot();
