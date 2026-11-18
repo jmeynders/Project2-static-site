@@ -1,131 +1,179 @@
+/* ---------- Theme ---------- */
 :root {
-    --ink: #1a1a1a;
-    --paper: #faf8f5;
-    --rule: #333;
-    --muted: #666;
+    /* surfaces */
+    --wall: #f3eee2;
+    /* warm parchment / museum wall */
+    --card-bg: #fbf8f1;
+    /* slightly lighter card */
+    --border: #d4c9b4;
+    /* soft stone border */
+
+    /* text */
+    --ink: #2a2925;
+    /* deep warm black */
+    --muted-ink: #5e5a50;
+    /* captions, metadata */
+
+    /* accents */
+    --meadow: #5f6f4e;
+    /* olive green */
+    --water: #4c6b7a;
+    /* slate blue */
+    --stone: #a8754f;
+    /* terracotta / ochre */
+
+    /* states */
+    --active-bg: #3f4f3a;
+    --active-text: #f6f2e8;
+    --link: #3f5f73;
+    --link-hover: #a8754f;
 }
 
+/* ---------- Base ---------- */
 * {
     box-sizing: border-box;
 }
 
+html,
 body {
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--wall);
     color: var(--ink);
-    background: var(--paper);
-    margin: 0;
-    padding: 2rem;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.5;
+    padding: 2rem 1.5rem 4rem;
     max-width: 1200px;
-    margin-inline: auto;
+    margin: 0 auto;
 }
 
-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-h1 {
-    font-size: 2.5rem;
-    margin: 0;
-    letter-spacing: 0.02em;
-}
-
-.subtitle {
-    font-style: italic;
-    color: var(--muted);
-    margin-top: 0.25rem;
-}
-
-section {
-    margin-bottom: 2.5rem;
-}
-
-h2 {
-    border-bottom: 2px solid var(--rule);
-    padding-bottom: 0.3rem;
-}
-
+/* ---------- Room buttons ---------- */
 #room-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
 }
 
 #room-buttons button {
-    padding: 0.5rem 0.9rem;
-    border: 1px solid var(--rule);
-    background: white;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted-ink);
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
     cursor: pointer;
-    font: inherit;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+#room-buttons button:hover {
+    border-color: var(--meadow);
+    color: var(--ink);
 }
 
 #room-buttons button.active {
-    background: var(--ink);
-    color: white;
+    background: var(--active-bg);
+    border-color: var(--active-bg);
+    color: var(--active-text);
 }
 
+#room-buttons button:focus-visible {
+    outline: 2px solid var(--water);
+    outline-offset: 2px;
+}
+
+/* ---------- Gallery grid ---------- */
 #gallery {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.75rem;
+    align-items: start;
 }
 
+#gallery>p {
+    grid-column: 1 / -1;
+    color: var(--muted-ink);
+    font-style: italic;
+}
+
+/* ---------- Cards ---------- */
 .card {
-    background: white;
-    padding: 0.6rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 18px rgba(42, 41, 37, 0.12);
+    transform: translateY(-2px);
 }
 
 .card img {
     width: 100%;
-    height: 180px;
+    height: 220px;
     object-fit: cover;
     display: block;
+    background: #e5dfd0;
 }
 
 .card h3 {
-    font-size: 1rem;
-    margin: 0.5rem 0 0.2rem;
+    margin: 0.9rem 1rem 0.25rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink);
 }
 
 .card p {
+    margin: 0.15rem 1rem;
     font-size: 0.85rem;
-    color: var(--muted);
-    margin: 0.1rem 0;
+    color: var(--muted-ink);
 }
 
+.card p:last-of-type {
+    margin-bottom: 0.75rem;
+}
+
+/* ---------- Citation link ---------- */
 .cite-link {
-    margin-top: auto;
-    padding-top: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--ink);
-    text-decoration: underline;
+    margin: 0.5rem 1rem 1rem;
+    align-self: flex-start;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-#selected-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 0.75rem;
+.cite-link:hover {
+    color: var(--link-hover);
+    border-bottom-color: var(--link-hover);
 }
 
-#selected-grid .card img {
-    height: 120px;
+.cite-link:focus-visible {
+    outline: 2px solid var(--water);
+    outline-offset: 3px;
 }
 
-#clear-selection {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--rule);
-    background: white;
-    cursor: pointer;
-}
+/* ---------- Small screens ---------- */
+@media (max-width: 600px) {
+    body {
+        padding: 1.25rem 1rem 3rem;
+    }
 
-footer {
-    border-top: 1px solid var(--rule);
-    padding-top: 1rem;
-    font-size: 0.85rem;
-    color: var(--muted);
+    #gallery {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
 }

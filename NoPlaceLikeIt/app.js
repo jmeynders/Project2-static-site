@@ -1,7 +1,6 @@
 // app.js
 
 const SEARCH_API = "https://data.rijksmuseum.nl/search/collection";
-const OBJECT_BASE = "https://id.rijksmuseum.nl";
 
 // Five rooms
 const EXHIBITION = {
@@ -50,7 +49,7 @@ function escapeHtml(str) {
     }[c]));
 }
 
-// Recursively find the first IIIF image URL inside the Linked Art record
+// Find the first image URL in Linked Art
 function findImageUrl(obj) {
     if (!obj || typeof obj !== "object") return null;
     if (Array.isArray(obj)) {
@@ -76,7 +75,7 @@ function findImageUrl(obj) {
     return null;
 }
 
-// Pull the actual Title (ignoring the Object Number)
+// Pull the Title
 function extractLabel(obj) {
     const ids = obj?.identified_by;
     if (!Array.isArray(ids)) return "Untitled";
@@ -99,7 +98,7 @@ function extractLabel(obj) {
     return longest || "Untitled";
 }
 
-// Pull creator name from produced_by.carried_out_by
+// Pull creator name
 function extractCreator(obj) {
     const carried = obj?.produced_by?.carried_out_by;
     if (!Array.isArray(carried)) return "Anonymous";
@@ -111,7 +110,7 @@ function extractCreator(obj) {
     return "Anonymous";
 }
 
-// Pull a date string from produced_by.timespan
+// Pull a date
 function extractDate(obj) {
     const ts = obj?.produced_by?.timespan;
     if (!ts) return "";
@@ -120,7 +119,7 @@ function extractDate(obj) {
     return "";
 }
 
-// Pull the place (looks in production AND current location)
+// Pull the place
 function extractPlace(obj) {
     // Check production place
     const producedPlace = obj?.produced_by?.took_place_at;
@@ -141,39 +140,25 @@ function extractPlace(obj) {
 
 // ---------- Rijksmuseum API ----------
 
-async function searchObjectIds(term, limit = 10) {
-    // Dropped 'creator=anonymous' and added 'type=painting'
-    const url = `${SEARCH_API}?description=${encodeURIComponent(term)}&type=painting&imageAvailable=true`;
-    const res = await fetch(url, { headers: { Accept: "application/ld+json" } });
-    if (!res.ok) throw new Error(`Search ${term} failed: ${res.status}`);
-    const json = await res.json();
-    const items = json.orderedItems || [];
-    return items.slice(0, limit).map((it) => it.id);
-}
-
 async function resolveObject(id, room) {
     const res = await fetch(id, { headers: { Accept: "application/ld+json" } });
     if (!res.ok) throw new Error(`Resolve ${id} failed: ${res.status}`);
     const obj = await res.json();
 
-    const title = extractLabel(obj) || "Untitled";
-
     return {
         id,
         room,
-        title: title,
+        title: extractLabel(obj),
         creator: extractCreator(obj),
         date: extractDate(obj),
         place: extractPlace(obj),
         imageUrl: findImageUrl(obj),
-        objectUrl: id,
     };
 }
 
 // ---------- State ----------
 
 let allWorks = [];
-let selectedIds = new Set(JSON.parse(localStorage.getItem("selected") || "[]"));
 let activeRoom = null;
 
 // ---------- Rendering ----------
@@ -208,7 +193,7 @@ function cardHtml(w) {
       <h3>${escapeHtml(w.title)}</h3>
       <p>${escapeHtml(w.creator)} · ${escapeHtml(w.date)}</p>
       <p>${escapeHtml(w.place)}</p>
-      <a href="${w.objectUrl}" target="_blank" class="cite-link">
+      <a href="${w.id}" target="_blank" class="cite-link">
         View at Rijksmuseum ↗
       </a>
     </article>`;
@@ -242,9 +227,7 @@ async function boot() {
     try {
         const results = [];
 
-        // Loop through your specific exhibition
         for (const [room, data] of Object.entries(EXHIBITION)) {
-            // Resolve only the IDs you provided
             const resolved = await Promise.all(
                 data.ids.map((id) => resolveObject(id, room).catch((e) => {
                     console.warn("Could not load", id, e.message);
