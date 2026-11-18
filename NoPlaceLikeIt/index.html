@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>No Place Like It — Living Anonymously</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</header>
+
+<body>
+    <header>
+        <h1>No Place Like It</h1>
+        <p class="subtitle">Living Anonymously</p>
+    </header>
+
+    <section id="intro-statement">
+        <h2>Introduction Statement</h2>
+        <p>
+            Every work in this exhibition is credited to an unknown artist. These are
+            pictures <em>of</em> somewhere; Created by anonymous artists painting
+            pictures <em>living from</em> somewhere else — not so much as dreams of travel but
+            of idealistic transmission, and secondhand imagining. These works are grouped into
+            five "rooms," they show the anonymous dreams of the ideal place and why there
+            is <em>No Place Like It.</em>
+        </p>
+        <p>
+            The museum organizes these works by chronology and medium. This exhibition recontextualizes them
+            into five thematic "rooms," each promising a different version of an ideal life. Because the artists are
+            anonymous, these landscapes belong to no one in particular. That absence of an author allows these
+            places to stand in for everyone's dream of the perfect home. And yet, looking at them side-by-side,
+            we must ask: whose dream was this, and why does it look so much like Italy?
+        </p>
+    </section>
+
+    <section id="room-nav">
+        <h2>Rooms</h2>
+        <div id="room-buttons"></div>
+    </section>
+
+    <main id="gallery">
+        <!-- artwork cards get injected here by JavaScript -->
+    </main>
+
+    <section id="selected">
+        <h2>Your Exhibition (Selected Works)</h2>
+        <p id="selected-count">0 works selected</p>
+        <div id="selected-grid"></div>
+        <button id="clear-selection">Clear selection</button>
+    </section>
+
+    <footer>
+        <p>
+            Data and images from the
+            <a href="https://data.rijksmuseum.nl/" target="_blank">Rijksmuseum Linked Art API</a>.
+            All works shown are public domain or CC0.
+        </p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,136 @@
+:root {
+    --ink: #1a1a1a;
+    --paper: #faf8f5;
+    --rule: #333;
+    --muted: #666;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    margin: 0;
+    padding: 2rem;
+    max-width: 1200px;
+    margin-inline: auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    letter-spacing: 0.02em;
+}
+
+.subtitle {
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 0.25rem;
+}
+
+section {
+    margin-bottom: 2.5rem;
+}
+
+h2 {
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 0.3rem;
+}
+
+#room-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+#room-buttons button {
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--rule);
+    background: white;
+    cursor: pointer;
+    font: inherit;
+}
+
+#room-buttons button.active {
+    background: var(--ink);
+    color: white;
+}
+
+#gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    background: white;
+    padding: 0.6rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+.card h3 {
+    font-size: 1rem;
+    margin: 0.5rem 0 0.2rem;
+}
+
+.card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0.1rem 0;
+}
+
+.card button {
+    margin-top: auto;
+    padding: 0.4rem;
+    border: 1px solid var(--rule);
+    background: white;
+    cursor: pointer;
+}
+
+.card button.selected {
+    background: var(--ink);
+    color: white;
+}
+
+#selected-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+}
+
+#selected-grid .card img {
+    height: 120px;
+}
+
+#clear-selection {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--rule);
+    background: white;
+    cursor: pointer;
+}
+
+footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
